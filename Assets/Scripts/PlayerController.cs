@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Elements")]
-    [SerializeField] private CrowdSystem crowdSystem;
+    private CrowdSystem crowdSystem;
 
     [Header("Settings")]
     public float moveSpeed;
@@ -13,6 +13,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float slideSpeed;
     private Vector3 clickedScreenPosition;
     private Vector3 clickedPlayerPosition;
+
+    private void Start()
+    {
+        crowdSystem = GetComponent<CrowdSystem>();
+    }
 
     private void Update()
     {

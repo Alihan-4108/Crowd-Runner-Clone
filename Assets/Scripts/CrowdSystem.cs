@@ -4,6 +4,7 @@ public class CrowdSystem : MonoBehaviour
 {
     [Header("Elements")]
     [SerializeField] private Transform runnersParent;
+    [SerializeField] private GameObject runnerPrefab;
 
     [Header("Settings")]
     [SerializeField] private float radius;
@@ -34,5 +35,53 @@ public class CrowdSystem : MonoBehaviour
     public float GetCrowdRadius()
     {
         return radius * Mathf.Sqrt(runnersParent.childCount); // Tüm runnerlerin toplam alanını hesapla
+    }
+
+    public void ApplyBonus(BonusType bonusType, int bonusAmount)
+    {
+        switch (bonusType)
+        {
+            case BonusType.Addition:
+                AddRunners(bonusAmount);
+                break;
+            case BonusType.Difference:
+                RemoveRunner(bonusAmount);
+                break;
+            case BonusType.Product:
+                int runnersToAdd = runnersParent.childCount * (bonusAmount - 1);
+                // or  (runnersParent.childCount * bonusAmount) - runnersParent.childCount; 
+                AddRunners(runnersToAdd);
+                break;
+            case BonusType.Division:
+                int runnersToRemove = runnersParent.childCount - (runnersParent.childCount / bonusAmount);
+                RemoveRunner(runnersToRemove);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void AddRunners(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            Instantiate(runnerPrefab, runnersParent);
+        }
+    }
+
+    private void RemoveRunner(int amount)
+    {
+        if (amount > runnersParent.childCount)
+            amount = runnersParent.childCount;
+
+        int runnersAmount = runnersParent.childCount; //Last index
+
+        for (int i = runnersAmount - 1; i >= runnersAmount - amount; i--)
+        {
+            Transform runnerToDestroy = runnersParent.GetChild(i);
+            runnerToDestroy.SetParent(null); // Set parent to null before destroying
+
+            Destroy(runnerToDestroy.gameObject);
+        }
     }
 }
