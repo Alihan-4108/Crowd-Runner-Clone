@@ -32,6 +32,11 @@ public class PlayerDetection : MonoBehaviour
 
                 crowdSystem.ApplyBonus(bonusType, bonusAmount);
             }
+            
+            else if (detectedColliders[i].CompareTag("Finish"))
+            {
+                print("Finish Line");
+            }
         }
     }
 }

@@ -4,8 +4,14 @@ public class ChunkManager : MonoBehaviour
 {
     [Header("Elements")]
     [SerializeField] private Chunk[] chunksPrefabs;
+    [SerializeField] private Chunk[] levelsPrefabs;
 
     private void Start()
+    {
+        CreateOrderedLevel();
+    }
+
+    private void CreateRandomLevel()
     {
         Vector3 chunkPosition = Vector3.zero;
 
@@ -13,7 +19,26 @@ public class ChunkManager : MonoBehaviour
         {
             Chunk chunkToCreate = chunksPrefabs[Random.Range(0, chunksPrefabs.Length)];
 
-            if(i > 0)
+            if (i > 0)
+            {
+                chunkPosition.z += chunkToCreate.GetLength() / 2;
+            }
+
+            Chunk chunkInstance = Instantiate(chunkToCreate, chunkPosition, Quaternion.identity, transform);
+
+            chunkPosition.z += chunkInstance.GetLength() / 2;
+        }
+    }
+
+    private void CreateOrderedLevel()
+    {
+        Vector3 chunkPosition = Vector3.zero;
+
+        for (int i = 0; i < levelsPrefabs.Length; i++)
+        {
+            Chunk chunkToCreate = levelsPrefabs[i];
+
+            if (i > 0)
             {
                 chunkPosition.z += chunkToCreate.GetLength() / 2;
             }
