@@ -1,18 +1,31 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Elements")]
     private CrowdSystem crowdSystem;
+    private PlayerAnimator playerAnimator;
 
     [Header("Settings")]
     public float moveSpeed;
     private const float roadWidth = 5f;
+    private bool canMove;
 
     [Header("Control")]
     [SerializeField] private float slideSpeed;
     private Vector3 clickedScreenPosition;
     private Vector3 clickedPlayerPosition;
+
+    private void Awake()
+    {
+        GameManager.onGameStateChanged += GameStateChangedCallback;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.onGameStateChanged -= GameStateChangedCallback;
+    }
 
     private void Start()
     {
@@ -21,8 +34,31 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (!canMove)
+            return;
+
         MoveForward();
         ManageControl();
+    }
+
+    private void GameStateChangedCallback(GameManager.GameState gameState)
+    {
+        if (gameState == GameManager.GameState.Game)
+            StartMoving();
+    }
+
+    private void StartMoving()
+    {
+        canMove = true;
+
+        playerAnimator.Run();
+    }
+
+    private void StopMoving()
+    {
+        canMove = false;
+
+        playerAnimator.Idle();
     }
 
     private void MoveForward()
@@ -45,7 +81,7 @@ public class PlayerController : MonoBehaviour
             xScreenDifference *= slideSpeed;
 
             Vector3 position = transform.position;
-            
+
             position.x = clickedPlayerPosition.x + xScreenDifference;
             position.x = Mathf.Clamp(position.x, -roadWidth + crowdSystem.GetCrowdRadius(), roadWidth - crowdSystem.GetCrowdRadius());
 
