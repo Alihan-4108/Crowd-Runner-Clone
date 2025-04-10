@@ -3,6 +3,9 @@ using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
+
     [Header("Elements")]
     private CrowdSystem crowdSystem;
     private PlayerAnimator playerAnimator;
@@ -19,6 +22,11 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null)
+            Destroy(gameObject);
+        else
+            instance = this;
+
         GameManager.onGameStateChanged += GameStateChangedCallback;
     }
 
@@ -30,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         crowdSystem = GetComponent<CrowdSystem>();
+        playerAnimator = GetComponent<PlayerAnimator>();
     }
 
     private void Update()
