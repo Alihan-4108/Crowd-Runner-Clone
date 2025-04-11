@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,12 +8,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject menuPanel;
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private Slider progressBar;
+    [SerializeField] private TextMeshProUGUI levelText;
 
     private void Start()
     {
         progressBar.value = 0f;
 
         gamePanel.SetActive(false);
+
+        levelText.text = "Level " + (ChunkManager.instance.GetLevel() + 1);
     }
 
     private void Update()

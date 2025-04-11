@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerDetection : MonoBehaviour
 {
@@ -35,7 +36,11 @@ public class PlayerDetection : MonoBehaviour
             
             else if (detectedColliders[i].CompareTag("Finish"))
             {
-                print("Finish Line");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+                PlayerPrefs.SetInt("level", PlayerPrefs.GetInt("level") + 1);
+
+                print("Finish Line");                
             }
         }
     }
