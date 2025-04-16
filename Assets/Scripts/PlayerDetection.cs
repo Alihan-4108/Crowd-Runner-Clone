@@ -38,7 +38,7 @@ public class PlayerDetection : MonoBehaviour
 
                 PlayerPrefs.SetInt("level", PlayerPrefs.GetInt("level") + 1);
 
-                print("Finish Line");                
+                GameManager.instance.SetGameState(GameManager.GameState.LevelComplete);
             }
         }
     }
