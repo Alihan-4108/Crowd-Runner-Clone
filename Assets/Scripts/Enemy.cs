@@ -27,8 +27,6 @@ public class Enemy : MonoBehaviour
             case State.Running:
                 RunTowardsTarget();
                 break;
-            default:
-                break;
         }
     }
 

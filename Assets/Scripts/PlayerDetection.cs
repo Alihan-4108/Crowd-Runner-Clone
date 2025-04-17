@@ -13,7 +13,8 @@ public class PlayerDetection : MonoBehaviour
 
     private void Update()
     {
-        DetectDoors();
+        if (GameManager.instance.IsGameState())
+            DetectDoors();
     }
 
     private void DetectDoors()
@@ -31,7 +32,7 @@ public class PlayerDetection : MonoBehaviour
 
                 crowdSystem.ApplyBonus(bonusType, bonusAmount);
             }
-            
+
             else if (detectedColliders[i].CompareTag("Finish"))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
